@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOTVS.PDV.Calculator.Challenge", "TOTVS.PDV.Calculator.Challenge\TOTVS.PDV.Calculator.Challenge.csproj", "{7AB6408E-3F76-4A20-B6DC-FF67D70AA5D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOTVS.PDV.Calculator.Tests", "TOTVS.PDV.Calculator\TOTVS.PDV.Calculator.Tests.csproj", "{DA029D6C-EF52-4C6B-AF80-318E0C78B303}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AB6408E-3F76-4A20-B6DC-FF67D70AA5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB6408E-3F76-4A20-B6DC-FF67D70AA5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB6408E-3F76-4A20-B6DC-FF67D70AA5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB6408E-3F76-4A20-B6DC-FF67D70AA5D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA029D6C-EF52-4C6B-AF80-318E0C78B303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA029D6C-EF52-4C6B-AF80-318E0C78B303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA029D6C-EF52-4C6B-AF80-318E0C78B303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA029D6C-EF52-4C6B-AF80-318E0C78B303}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B980BFE4-4679-439F-8FAF-49AEE07E441F}
+	EndGlobalSection
+EndGlobal
