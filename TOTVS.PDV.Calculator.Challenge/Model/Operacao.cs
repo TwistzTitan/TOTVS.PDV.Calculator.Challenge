@@ -1,37 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+
+using System.ComponentModel.DataAnnotations;
 
 namespace TOTVS.PDV.Calculator.Challenge.Model
 {
     public class Operacao
     {
+        public int OperacaoId { get; set; }
         
-        public int OperacaoId;
+        public double ValorTotal { get; set; }
+        
+        public double ValorPago { get; set ; }
+        
+        public double ValorTroco { get; set; }
 
-        public double ValorTotal;
+        public string NomeOperador { get; set; }
 
-        public double ValorPago;
+        public int PDVCalculadoraId { get; set; }
+        
+        public PDVCalculadora PDVCalculadora { get; set; }
 
-        public double ValorTroco;
-
-        public string NomeOperador;
-
+        public static Operacao FromDTO (OperacaoDTO dto) 
+        {
+            return new Operacao() { 
+                ValorPago = dto.ValorPago, 
+                ValorTotal = dto.ValorTotal, 
+                NomeOperador = dto.NomeOperador 
+            };
+        }
     }
 
 
     public class OperacaoDTO 
     {
+        [Required]
+        public double ValorTotal { get; set; }
 
-        public int OperacaoId;
+        [Required]
+        public double ValorPago { get; set; }
 
-        public double ValorTotal;
-
-        public double ValorPago;
-
-        public string NomeOperador;
+        [StringLength(60)]
+        public string NomeOperador { get; set; }
 
     }
 

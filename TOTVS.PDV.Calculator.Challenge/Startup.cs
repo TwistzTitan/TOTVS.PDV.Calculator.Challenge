@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TOTVS.PDV.Calculator.Challenge.Model;
+using TOTVS.PDV.Calculator.Challenge.Services;
 
 namespace TOTVS.PDV.Calculator.Challenge
 {
@@ -24,8 +25,11 @@ namespace TOTVS.PDV.Calculator.Challenge
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-            services.AddTransient<IPDVCalculadora>();
+            
+            services.AddControllers();
+            
+            services.AddTransient<IPDVCalculadora,PDVCalculadoraService>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,16 +46,14 @@ namespace TOTVS.PDV.Calculator.Challenge
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+         
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

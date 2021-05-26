@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TOTVS.PDV.Calculator.Challenge.Data;
 using TOTVS.PDV.Calculator.Challenge.Model;
 
 namespace TOTVS.PDV.Calculator.Challenge.Services
 {
-    public class PDVCalculadora : IPDVCalculadora
+    public class PDVCalculadoraService : IPDVCalculadora
     {
         public List<Dinheiro> listaRetorno = new List<Dinheiro>();
+
+        private RepositorioOperacao _repoOperacao;
+
+
+        public PDVCalculadoraService()
+        {
+        }
+
         public List<Dinheiro> ObterTroco(Operacao op)
         {
 
@@ -16,18 +25,29 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
             if (op.ValorTotal <= 0 || op.ValorPago <= 0)
                 return null;
             
-            double valorDiferenca = op.ValorPago - op.ValorTotal;
+            op.ValorTroco = op.ValorPago - op.ValorTotal;
 
-            if (valorDiferenca == 0)
+            if (op.ValorTroco == 0) 
+            {
 
                 return listaRetorno;
             
-            if (valorDiferenca >= 10) 
+            }
+
+                
+
+            if(op.ValorTroco < 0) 
+            {
+
+                return listaRetorno;
+            }
+            
+            if (op.ValorTroco >= 10) 
             {
                 listaRetorno.AddRange(CalcularNotas(op));
             }
             
-            if(valorDiferenca < 10)
+            if(op.ValorTroco < 10)
             {
                 listaRetorno.AddRange(CalcularMoedas(op));
             }
@@ -41,7 +61,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
         {
             List<Dinheiro> listaRetorno = new List<Dinheiro>();
             
-            double valorTroco = op.ValorPago - op.ValorTotal;
+            double valorTroco = op.ValorTroco;
             
             int contaNota = 0;
 
@@ -102,7 +122,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
         {
             List<Dinheiro> listaRetorno = new List<Dinheiro>();
 
-            double valorTroco = op.ValorPago - op.ValorTotal;
+            double valorTroco = op.ValorTroco;
 
             int contaMoeda = 0;
 

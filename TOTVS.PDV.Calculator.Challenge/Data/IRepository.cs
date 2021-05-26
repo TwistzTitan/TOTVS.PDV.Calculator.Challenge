@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace TOTVS.PDV.Calculator.Challenge.Data
 {
-    public interface IRepository<T>
+    public interface IRepository
     {
-        List<T> FindAll();
+        public void Obter<T>(int i);
+
+        public void Registrar<T>(T ob);
 
     }
 }

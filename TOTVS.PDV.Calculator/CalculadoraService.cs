@@ -20,7 +20,7 @@ namespace TOTVS.PDV.Calculator
         {
             calculadoraTest = new Mock<IPDVCalculadora>();
             operacaoFixtures = new OperacaoFixtures();
-            calculadora = new PDVCalculadora();
+            calculadora = new PDVCalculadoraService();
         }
         
         [TestMethod]
