@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,13 +8,31 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
 {
     public class Operacao
     {
-        public int? OperacaoId;
+        
+        public int OperacaoId;
 
         public double ValorTotal;
 
         public double ValorPago;
 
-        public string NomeOperador; 
+        public double ValorTroco;
+
+        public string NomeOperador;
+
+    }
+
+
+    public class OperacaoDTO 
+    {
+
+        public int OperacaoId;
+
+        public double ValorTotal;
+
+        public double ValorPago;
+
+        public string NomeOperador;
+
     }
 
 

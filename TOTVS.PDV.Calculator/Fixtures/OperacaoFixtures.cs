@@ -40,23 +40,23 @@ namespace TOTVS.PDV.Calculator.Tests.Fixtures
             return operacao;
         }
 
-        public Operacao ComValorPago(double valor) 
+        public OperacaoFixtures ComValorPago(double valor) 
         {
             this.operacao.ValorPago = valor;
 
-            return operacao;
+            return this;
         }
 
-        public Operacao ComValorTotal(double valor)
+        public OperacaoFixtures ComValorTotal(double valor)
         {
             this.operacao.ValorTotal = valor;
-            return operacao;
+            return this;
         }
 
-        public Operacao ComNomeOperador(string nome)
+        public OperacaoFixtures ComNomeOperador(string nome)
         {
             this.operacao.NomeOperador = nome;
-            return operacao;
+            return this;
         }
         public Operacao Build()
         {

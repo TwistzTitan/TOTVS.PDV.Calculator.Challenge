@@ -14,12 +14,13 @@ namespace TOTVS.PDV.Calculator
     {
         public Mock<IPDVCalculadora> calculadoraTest;
         public OperacaoFixtures operacaoFixtures;
-
+        public IPDVCalculadora calculadora;
         [TestInitialize]
         public void Inicializa()
         {
             calculadoraTest = new Mock<IPDVCalculadora>();
             operacaoFixtures = new OperacaoFixtures();
+            calculadora = new PDVCalculadora();
         }
         
         [TestMethod]
@@ -27,9 +28,7 @@ namespace TOTVS.PDV.Calculator
         {
             Operacao opTest = operacaoFixtures.Cria_Operacao_Correta_Com_Troco_Moeda();
 
-            IPDVCalculadora calc = new PDVCalculadora();
-
-            List<Dinheiro> listaMoeda =  calc.CalcularMoedas(opTest);
+            List<Dinheiro> listaMoeda =  calculadora.CalcularMoedas(opTest);
 
             Assert.IsTrue(listaMoeda.Any());
             Assert.IsTrue(listaMoeda.All( m => m.GetType() == typeof(Moeda)));
@@ -43,9 +42,7 @@ namespace TOTVS.PDV.Calculator
         {
             Operacao opTest = operacaoFixtures.Cria_Operacao_Correta_Com_Troco_Nota();
 
-            IPDVCalculadora calc = new PDVCalculadora();
-
-            List<Dinheiro> listaMoeda = calc.CalcularNotas(opTest);
+            List<Dinheiro> listaMoeda = calculadora.CalcularNotas(opTest);
 
             Assert.IsTrue(listaMoeda.Any());
             Assert.IsTrue(listaMoeda.All(m => m.GetType() == typeof(Nota)));
@@ -54,20 +51,38 @@ namespace TOTVS.PDV.Calculator
             Assert.IsNotNull(opTest.NomeOperador);
         }
 
+        [TestMethod]
         public void Nao_Calcular_Troco_Quando_O_Valor_Total_E_Menor_Que_Zero() 
-        { 
-            
-        }
+        {
+            Operacao opTest = operacaoFixtures.ComNomeOperador("Joao").ComValorPago(100).ComValorTotal(-10).Build();
 
+            List<Dinheiro> listaSemTroco = calculadora.ObterTroco(opTest);
+
+            Assert.AreEqual(listaSemTroco,null);
+
+        }
+        [TestMethod]
         public void Nao_Calcular_Troco_Quando_O_Valor_Pago_E_Menor_Que_Zero() 
         {
-        
+            Operacao opTest = operacaoFixtures.ComNomeOperador("Gisele").ComValorPago(-17).ComValorTotal(1000).Build();
+
+            List<Dinheiro> listaSemTroco = calculadora.ObterTroco(opTest);
+
+            Assert.AreEqual(listaSemTroco, null);
+
         }
-        public void Retornar_Operacao_Default_Quando_Nao_Tem_Troco()
+        [TestMethod]
+        public void Retornar_Padrao_Quando_Nao_Tem_Troco()
         {
 
+            Operacao opTest = operacaoFixtures.ComNomeOperador("Janice").ComValorPago(1000).ComValorTotal(1000).Build();
 
-        }
+            List<Dinheiro> listaPadrao = calculadora.ObterTroco(opTest);
+            
+            Assert.AreEqual(listaPadrao.Count,0);
+                
+            
+         }
 
 
     }

@@ -11,6 +11,11 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
         public List<Dinheiro> listaRetorno = new List<Dinheiro>();
         public List<Dinheiro> ObterTroco(Operacao op)
         {
+
+
+            if (op.ValorTotal <= 0 || op.ValorPago <= 0)
+                return null;
+            
             double valorDiferenca = op.ValorPago - op.ValorTotal;
 
             if (valorDiferenca == 0)
@@ -97,7 +102,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
         {
             List<Dinheiro> listaRetorno = new List<Dinheiro>();
 
-            double valorTroco = op.ValorPago;
+            double valorTroco = op.ValorPago - op.ValorTotal;
 
             int contaMoeda = 0;
 
