@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace TOTVS.PDV.Calculator.Challenge.Model
 {
-    interface IPDVCalculadora
+    public interface IPDVCalculadora
     {
-
-        public string ObterTroco(Operacao op);
+        public List<Dinheiro> ObterTroco(Operacao op);
     
     }
 }
