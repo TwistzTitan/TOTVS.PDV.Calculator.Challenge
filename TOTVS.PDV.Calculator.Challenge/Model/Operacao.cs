@@ -9,9 +9,9 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
     {
         public int? OperacaoId;
 
-        public long? ValorTotal;
+        public double ValorTotal;
 
-        public long? ValorPago;
+        public double ValorPago;
 
         public string NomeOperador; 
     }

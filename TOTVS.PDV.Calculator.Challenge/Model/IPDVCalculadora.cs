@@ -8,6 +8,10 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
     public interface IPDVCalculadora
     {
         public List<Dinheiro> ObterTroco(Operacao op);
+
+        public List<Dinheiro> CalcularNotas(Operacao op);
+
+        public List<Dinheiro> CalcularMoedas(Operacao op);
     
     }
 }
