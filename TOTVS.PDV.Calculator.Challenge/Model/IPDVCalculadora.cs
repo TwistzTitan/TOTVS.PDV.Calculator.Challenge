@@ -9,9 +9,11 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
     {
         public List<Dinheiro> ObterTroco(Operacao op);
 
-        public List<Dinheiro> CalcularNotas(Operacao op);
+        public List<Dinheiro> CalcularNotas(ref double valor);
 
-        public List<Dinheiro> CalcularMoedas(Operacao op);
+        public List<Dinheiro> CalcularMoedas(ref double valor);
+
+        public string MensagemRetorno ();
     
     }
 }

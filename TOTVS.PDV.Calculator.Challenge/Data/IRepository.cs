@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace TOTVS.PDV.Calculator.Challenge.Data
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        public void Obter<T>(int i);
+        public T Obter(int i);
 
-        public void Registrar<T>(T ob);
+        public bool Registrar(T ob);
 
+        public List<T> ObterTodos();
     }
 }

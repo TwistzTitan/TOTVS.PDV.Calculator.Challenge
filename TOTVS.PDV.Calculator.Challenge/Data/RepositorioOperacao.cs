@@ -7,11 +7,10 @@ using TOTVS.PDV.Calculator.Challenge.Model;
 
 namespace TOTVS.PDV.Calculator.Challenge.Data
 {
-    public class RepositorioOperacao
+    public class RepositorioOperacao : IRepository<Operacao>
     {
 
         private DbContextOperacao _contexto;
-
 
         public Operacao Obter(int id)
         {
@@ -25,7 +24,26 @@ namespace TOTVS.PDV.Calculator.Challenge.Data
            return operacao;
         }
         
+        public List<Operacao>ObterTodos() 
+        {
 
+            using (_contexto = new DbContextOperacao())
+            {
+                
+                try
+                {
+                    return _contexto.Operacoes.ToList();
+                    
+                }
+                catch
+                {
+                    return new List<Operacao>();
+                }
+            }
+
+
+        }
+        
         public bool Registrar(Operacao op) 
         {
             

@@ -23,6 +23,7 @@ namespace TOTVS.PDV.Calculator.Tests.Fixtures
                     .RuleFor(op => op.OperacaoId, set => set.Random.Number(10000, 30000))
                     .RuleFor(op => op.ValorTotal, set => set.Random.Number(0, 10))
                     .RuleFor(op => op.ValorPago, (set, op) => op.ValorTotal + set.Random.Number(1,9))
+                    .RuleFor(op => op.ValorTroco, (set, op) => op.ValorPago - op.ValorTotal)
                     .Generate();
 
             return operacao;
@@ -35,6 +36,7 @@ namespace TOTVS.PDV.Calculator.Tests.Fixtures
                 .RuleFor(op => op.OperacaoId, set => set.Random.Number(10000, 30000))
                 .RuleFor(op => op.ValorTotal, set => set.Random.Number(10, 100000))
                 .RuleFor(op => op.ValorPago, (set, op) => op.ValorTotal + set.Random.Number(1, 1000))
+                .RuleFor(op => op.ValorTroco, (set , op) => op.ValorPago - op.ValorTotal)
                 .Generate();
 
             return operacao;

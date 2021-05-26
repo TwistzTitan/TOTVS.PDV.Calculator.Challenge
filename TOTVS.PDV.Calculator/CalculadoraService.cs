@@ -22,32 +22,42 @@ namespace TOTVS.PDV.Calculator
             operacaoFixtures = new OperacaoFixtures();
             calculadora = new PDVCalculadoraService();
         }
-        
+
         [TestMethod]
         public void Calcular_Troco_Para_Moedas()
         {
             Operacao opTest = operacaoFixtures.Cria_Operacao_Correta_Com_Troco_Moeda();
 
-            List<Dinheiro> listaMoeda =  calculadora.CalcularMoedas(opTest);
+            double compareTroco = opTest.ValorTroco;
+
+            double trocoTest = opTest.ValorTroco;
+
+            List<Dinheiro> listaMoeda = calculadora.CalcularMoedas(ref trocoTest);
 
             Assert.IsTrue(listaMoeda.Any());
-            Assert.IsTrue(listaMoeda.All( m => m.GetType() == typeof(Moeda)));
+            Assert.IsTrue(compareTroco > trocoTest);
+            Assert.IsTrue(listaMoeda.All(m => m.GetType() == typeof(Moeda)));
             Assert.IsTrue(listaMoeda.All(m => m.Quantidade > 0));
             Assert.IsTrue(listaMoeda.All(m => m.Valor > 0 && m.Valor < 1));
             Assert.IsNotNull(opTest.NomeOperador);
         }
 
         [TestMethod]
-        public void Calcular_Troco_Para_Notas() 
+        public void Calcular_Troco_Para_Notas()
         {
             Operacao opTest = operacaoFixtures.Cria_Operacao_Correta_Com_Troco_Nota();
 
-            List<Dinheiro> listaMoeda = calculadora.CalcularNotas(opTest);
+            double compareTroco = opTest.ValorTroco;
+            
+            double trocoTest = opTest.ValorTroco;
 
-            Assert.IsTrue(listaMoeda.Any());
-            Assert.IsTrue(listaMoeda.All(m => m.GetType() == typeof(Nota)));
-            Assert.IsTrue(listaMoeda.All(m => m.Quantidade > 0));
-            Assert.IsTrue(listaMoeda.All(m => m.Valor > 10));
+            List<Dinheiro> listaNotas = calculadora.CalcularNotas(ref trocoTest);
+
+            Assert.IsTrue(listaNotas.Any());
+            Assert.IsTrue(compareTroco > trocoTest);
+            Assert.IsTrue(listaNotas.All(m => m.GetType() == typeof(Nota)));
+            Assert.IsTrue(listaNotas.All(m => m.Quantidade > 0));
+            Assert.IsTrue(listaNotas.All(m => m.Valor > 10));
             Assert.IsNotNull(opTest.NomeOperador);
         }
 
@@ -58,7 +68,7 @@ namespace TOTVS.PDV.Calculator
 
             List<Dinheiro> listaSemTroco = calculadora.ObterTroco(opTest);
 
-            Assert.AreEqual(listaSemTroco,null);
+            Assert.AreEqual(listaSemTroco.Count(),0);
 
         }
         [TestMethod]
@@ -67,10 +77,25 @@ namespace TOTVS.PDV.Calculator
             Operacao opTest = operacaoFixtures.ComNomeOperador("Gisele").ComValorPago(-17).ComValorTotal(1000).Build();
 
             List<Dinheiro> listaSemTroco = calculadora.ObterTroco(opTest);
+            
+            Assert.AreEqual(listaSemTroco.Count(),0);
 
-            Assert.AreEqual(listaSemTroco, null);
+            Assert.IsTrue(calculadora.MensagemRetorno().Contains("Operação não realizada"));
+        }
+
+        [TestMethod]
+        public void Nao_Calcular_Troco_Quando_O_Valor_Pago_E_Insuficiente()
+        {
+            Operacao opTest = operacaoFixtures.ComNomeOperador("Gisele").ComValorPago(100).ComValorTotal(1000).Build();
+
+            List<Dinheiro> listaSemTroco = calculadora.ObterTroco(opTest);
+
+            Assert.AreEqual(listaSemTroco.Count(), 0);
+
+            Assert.IsTrue(calculadora.MensagemRetorno().Contains("Operação não realizada"));
 
         }
+
         [TestMethod]
         public void Retornar_Padrao_Quando_Nao_Tem_Troco()
         {
@@ -80,10 +105,26 @@ namespace TOTVS.PDV.Calculator
             List<Dinheiro> listaPadrao = calculadora.ObterTroco(opTest);
             
             Assert.AreEqual(listaPadrao.Count,0);
-                
+
+            Assert.IsTrue(calculadora.MensagemRetorno().Contains("Não há troco para essa operação"));
+
+
+        }
+
+        [TestMethod]
+        public void Obter_Troco_Com_Notas_E_Moedas()
+        {
+
+            Operacao opTest = operacaoFixtures.ComNomeOperador("Jefferson").ComValorPago(25.78).ComValorTotal(10).Build();
+
+            List<Dinheiro> listaPadrao = calculadora.ObterTroco(opTest);
             
-         }
+            Assert.IsTrue(listaPadrao.Any());
+            
+            Assert.IsTrue(listaPadrao.Select(d => d.Tipo == TipoDinheiro.Moeda ).Count() > 0);
+            
+            Assert.IsTrue(listaPadrao.Select(d => d.Tipo == TipoDinheiro.Nota).Count() > 0);
 
-
+        }
     }
 }

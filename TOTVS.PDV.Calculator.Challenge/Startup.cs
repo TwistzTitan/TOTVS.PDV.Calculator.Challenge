@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TOTVS.PDV.Calculator.Challenge.Data;
 using TOTVS.PDV.Calculator.Challenge.Model;
 using TOTVS.PDV.Calculator.Challenge.Services;
 
@@ -29,6 +30,8 @@ namespace TOTVS.PDV.Calculator.Challenge
             services.AddControllers();
             
             services.AddTransient<IPDVCalculadora,PDVCalculadoraService>();
+
+            services.AddTransient<IRepository<Operacao>, RepositorioOperacao>();
            
         }
 
@@ -46,14 +49,12 @@ namespace TOTVS.PDV.Calculator.Challenge
                 app.UseHsts();
             }
 
-         
-            app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
             });
         }
     }

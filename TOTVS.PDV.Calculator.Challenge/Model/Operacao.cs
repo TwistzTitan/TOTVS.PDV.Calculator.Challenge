@@ -16,10 +16,6 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
 
         public string NomeOperador { get; set; }
 
-        public int PDVCalculadoraId { get; set; }
-        
-        public PDVCalculadora PDVCalculadora { get; set; }
-
         public static Operacao FromDTO (OperacaoDTO dto) 
         {
             return new Operacao() { 

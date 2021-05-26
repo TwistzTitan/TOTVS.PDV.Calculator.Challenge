@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using TOTVS.PDV.Calculator.Challenge.Data;
 using TOTVS.PDV.Calculator.Challenge.Model;
 
 namespace TOTVS.PDV.Calculator.Challenge.Controllers
@@ -10,15 +12,28 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
     public class CalculadoraController : ControllerBase
     {
         private IPDVCalculadora _calculadoraService;
-        public CalculadoraController(IPDVCalculadora calc) 
+
+        private IRepository<Operacao> _repo;
+        
+        public CalculadoraController(IPDVCalculadora calc, IRepository<Operacao> repo) 
         {
 
             _calculadoraService = calc;
-
+            _repo = repo;
         }
 
+        
+        [HttpGet]
+
+        public ActionResult<HttpStatusCode> Operacoes()
+        {
+            var ops = _repo.ObterTodos();
+            
+            return Ok(ops);
+        }
+        
         [HttpPost]
-        public ActionResult ObterTroco(OperacaoDTO op)
+        public ActionResult<HttpStatusCode> ObterTroco(OperacaoDTO op)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Modelo inválido");
@@ -29,23 +44,17 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
 
             if (lista.Any())
             {
-                StringBuilder retorno = new StringBuilder();
-
-                retorno.Append("Entregar ");
-
-                var listaOrdenadaPorValor = lista.OrderBy(d => d.Valor).ToList();
-                
-                foreach( var d in listaOrdenadaPorValor)
-                {   
-
-                    retorno.Append(string.Format("{0} nota de {1:C2}", d.Quantidade, d.Valor));
-                }
-
-                return Created("Operacao Realizada",retorno.ToString());
+             
+                return Created("Operação realizada.", _calculadoraService.MensagemRetorno());
             }
 
             else
-                return NotFound();
+            {
+
+                return NotFound(_calculadoraService.MensagemRetorno());
+            
+            }
         }
+
     }
 }
