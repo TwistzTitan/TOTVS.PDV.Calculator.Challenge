@@ -12,6 +12,8 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
     {
         public List<Dinheiro> listaRetorno = new List<Dinheiro>();
 
+        public Dictionary<double, TipoDinheiro> dinheiroDict = new Dictionary<double, TipoDinheiro>();
+
         public IRepository<Operacao> _repoOperacao;
 
         public string mensagemRetorno { get; set; }
@@ -19,6 +21,8 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
         public PDVCalculadoraService(IRepository<Operacao> repo)
         {
             _repoOperacao = repo;
+
+            AdicionarCedula();
         }
 
         public List<Dinheiro> ObterTroco(Operacao op)
@@ -56,15 +60,9 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
 
             resultadoTroco = op.ValorTroco;
 
-            if (resultadoTroco >= 10) 
-            {
-                listaRetorno.AddRange(CalcularNotas(ref resultadoTroco));
-            }
-            
-            if(resultadoTroco < 10)
-            {
-                listaRetorno.AddRange(CalcularMoedas(ref resultadoTroco));
-            }
+
+            Calcular(ref resultadoTroco);
+
 
             if(_repoOperacao.Registrar(op))
 
@@ -75,118 +73,50 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
 
         }
 
-        public List<Dinheiro> CalcularNotas(ref double retornoTroco)
+        public List<Dinheiro> Calcular(ref double retornoTroco)
         {
             List<Dinheiro> notas = new List<Dinheiro>();
-            
-            int contaNota = 0;
 
-            if (retornoTroco == 0) return listaRetorno;
-       
-            if (retornoTroco >= 100)
+            dinheiroDict.OrderByDescending(d => d.Key);
+
+            foreach (var d in dinheiroDict) 
             {
-                for(int i = 0; retornoTroco >= 100; i++) 
+
+                if (retornoTroco >= d.Key)
                 {
-                    retornoTroco -= 100;
-                    contaNota = i + 1;
+                    int contaNota = 0;
+
+                    for (int i = 0; retornoTroco >= d.Key; i++)
+                    {
+                        retornoTroco -= d.Key;
+                        contaNota = i + 1;
+                    }
+
+                    if (d.Value == TipoDinheiro.Nota)
+
+                        notas.Add(new Nota(contaNota, d.Key));
+
+                    else
+                        notas.Add(new Moeda(contaNota, d.Key));
+
                 }
 
-                notas.Add(new Nota(contaNota,100));
-                contaNota = 0;
-            }
-
-            if (retornoTroco >= 50)
-            {
-                for (int i = 0; retornoTroco >= 50; i++)
-                {
-                    retornoTroco -= 50;
-                    contaNota = i + 1;
-                }
-
-                notas.Add(new Nota(contaNota, 50));
-                contaNota = 0;
-
-            }
-
-            if (retornoTroco >= 20)
-            {
-                for (int i = 0; retornoTroco >= 20; i++)
-                {
-                    retornoTroco -= 20;
-                    contaNota = i + 1;
-                }
-                notas.Add(new Nota(contaNota, 20));
-                contaNota = 0;
-
-            }
-            
-            if (retornoTroco >= 10)
-            {
-                for (int i = 0; retornoTroco >= 10; i++)
-                {
-                    retornoTroco -= 10;
-                    contaNota = i + 1;
-                }
-                notas.Add(new Nota(contaNota, 100));
             }
 
             return notas;
 
         }
 
-        public List<Dinheiro> CalcularMoedas(ref double retornoTroco)
+        public void AdicionarCedula() 
         {
-            List<Dinheiro> moedas = new List<Dinheiro>();
-            
-            int contaMoeda = 0;
 
-            if (retornoTroco >= 0.50)
-            {
-                for (int i = 0; retornoTroco >= 0.50; i++)
-                {
-                    retornoTroco -= 0.50;
-                    contaMoeda = i + 1;
-                }
-
-                moedas.Add(new Moeda(contaMoeda, 0.50));
-                contaMoeda = 0;
-            }
-
-            if (retornoTroco >= 0.10)
-            {
-                for (int i = 0; retornoTroco >= 0.10; i++)
-                {
-                    retornoTroco -= 0.10;
-                    contaMoeda = i + 1;
-                }
-
-                moedas.Add(new Moeda(contaMoeda, 0.10));
-                contaMoeda = 0;
-            }
-
-            if (retornoTroco >= 0.05)
-            {
-                for (int i = 0; retornoTroco >= 0.05; i++)
-                {
-                    retornoTroco -= 20;
-                    contaMoeda = i + 1;
-                }
-                moedas.Add(new Moeda(contaMoeda, 0.05));
-                contaMoeda = 0;
-
-            }
-
-            if(retornoTroco >= 0.01){ 
-                for (int i = 0; retornoTroco >= 0.01; i++)
-                {
-                    retornoTroco -= 0.01;
-                    contaMoeda = i + 1;
-                }
-
-                moedas.Add(new Moeda(contaMoeda, 0.01));
-            }
-            
-            return moedas;
+            dinheiroDict.Add(100, TipoDinheiro.Nota);
+            dinheiroDict.Add(50, TipoDinheiro.Nota);
+            dinheiroDict.Add(20, TipoDinheiro.Nota);
+            dinheiroDict.Add(0.50, TipoDinheiro.Moeda);
+            dinheiroDict.Add(0.10, TipoDinheiro.Moeda);
+            dinheiroDict.Add(0.05, TipoDinheiro.Moeda);
+            dinheiroDict.Add(0.01, TipoDinheiro.Moeda);
 
         }
 

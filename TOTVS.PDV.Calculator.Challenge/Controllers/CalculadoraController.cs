@@ -24,7 +24,6 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
 
         
         [HttpGet]
-
         public ActionResult<HttpStatusCode> Operacoes()
         {
             var ops = _repo.ObterTodos();

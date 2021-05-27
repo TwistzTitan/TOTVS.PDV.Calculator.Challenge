@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using TOTVS.PDV.Calculator.Challenge.Data;
 using TOTVS.PDV.Calculator.Challenge.Model;
 using TOTVS.PDV.Calculator.Challenge.Services;
+using Microsoft.OpenApi.Models;
 
 namespace TOTVS.PDV.Calculator.Challenge
 {
@@ -32,6 +33,9 @@ namespace TOTVS.PDV.Calculator.Challenge
             services.AddTransient<IPDVCalculadora,PDVCalculadoraService>();
 
             services.AddTransient<IRepository<Operacao>, RepositorioOperacao>();
+
+            services.AddSwaggerGen(s => s.SwaggerDoc("", new OpenApiInfo() { Title = "PDV Calculadora" }));
+
            
         }
 
@@ -55,6 +59,13 @@ namespace TOTVS.PDV.Calculator.Challenge
             {
                 endpoints.MapControllers();
 
+            });
+
+            app.UseSwagger(c => c.SerializeAsV2 = true);
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PDV Calculadora V1");
             });
         }
     }

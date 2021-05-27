@@ -5,7 +5,7 @@ using TOTVS.PDV.Calculator.Challenge.Model;
 using TOTVS.PDV.Calculator.Challenge.Services;
 using TOTVS.PDV.Calculator.Tests.Fixtures;
 using System.Linq;
-
+using TOTVS.PDV.Calculator.Challenge.Data;
 
 namespace TOTVS.PDV.Calculator
 {
@@ -15,12 +15,15 @@ namespace TOTVS.PDV.Calculator
         public Mock<IPDVCalculadora> calculadoraTest;
         public OperacaoFixtures operacaoFixtures;
         public IPDVCalculadora calculadora;
+        public Mock<IRepository<Operacao>> repo;
         [TestInitialize]
         public void Inicializa()
         {
             calculadoraTest = new Mock<IPDVCalculadora>();
             operacaoFixtures = new OperacaoFixtures();
-            calculadora = new PDVCalculadoraService();
+            repo = new Mock<IRepository<Operacao>>();
+            repo.Setup(r => r.Registrar(operacaoFixtures.Cria_Operacao_Correta_Com_Troco_Nota())).Returns(true);
+            calculadora = new PDVCalculadoraService(repo.Object);
         }
 
         [TestMethod]
@@ -32,7 +35,7 @@ namespace TOTVS.PDV.Calculator
 
             double trocoTest = opTest.ValorTroco;
 
-            List<Dinheiro> listaMoeda = calculadora.CalcularMoedas(ref trocoTest);
+            List<Dinheiro> listaMoeda = calculadora.Calcular(ref trocoTest);
 
             Assert.IsTrue(listaMoeda.Any());
             Assert.IsTrue(compareTroco > trocoTest);
@@ -51,7 +54,7 @@ namespace TOTVS.PDV.Calculator
             
             double trocoTest = opTest.ValorTroco;
 
-            List<Dinheiro> listaNotas = calculadora.CalcularNotas(ref trocoTest);
+            List<Dinheiro> listaNotas = calculadora.Calcular(ref trocoTest);
 
             Assert.IsTrue(listaNotas.Any());
             Assert.IsTrue(compareTroco > trocoTest);
