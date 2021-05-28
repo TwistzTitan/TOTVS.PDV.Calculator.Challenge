@@ -60,6 +60,7 @@ namespace TOTVS.PDV.Calculator.Tests.Fixtures
             this.operacao.NomeOperador = nome;
             return this;
         }
+
         public Operacao Build()
         {
             return this.operacao;

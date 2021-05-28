@@ -23,19 +23,31 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
             _repo = repo;
         }
 
-        
+        /// <summary>
+        ///  Retornar todas as operações realizadas.
+        /// </summary>
+        /// <returns>
+        /// Lista de operações.
+        /// </returns>
         [HttpGet]
         public ActionResult Operacoes()
         {
             var ops = _repo.ObterTodos();
+
+            if (ops.Any())
+                return Ok(ops);
             
-            return Ok(ops);
+            return NotFound("Sem operações registradas até o momento");
         }
+        
+        
         /// <summary>
-        ///  Obter o troco de uma operação de valor
+        ///  Obter o troco de uma operação de valor com gasto do cliente.
         /// </summary>
         /// <param name="op"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// Retorna as notas ou moedas para o troco da operação.
+        /// </returns>
         [HttpPost]
         [Consumes("application/json")]
        

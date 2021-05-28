@@ -32,7 +32,15 @@ namespace TOTVS.PDV.Calculator.Challenge
 
             services.AddTransient<IRepository<Operacao>, RepositorioOperacao>();
 
-            services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo() { Title = "PDV Calculadora" , Version = "1" , Description = "Calculadora PDV para Obter Troco"}));
+            services.AddSwaggerGen(s => s.SwaggerDoc(
+                "v1", 
+                new OpenApiInfo() 
+                    {   Title = "PDV Calculadora" , 
+                        Version = "1" , 
+                        Description = "Calculadora PDV para analistas de vendas operarem os gastos dos clientes."
+                    }
+                )
+            );
            
         }
 
@@ -64,7 +72,7 @@ namespace TOTVS.PDV.Calculator.Challenge
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("swagger/v1/swagger.json", "PDV Calculadora V1");
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "PDV Calculadora");
                 c.RoutePrefix = string.Empty;
             });
         }
