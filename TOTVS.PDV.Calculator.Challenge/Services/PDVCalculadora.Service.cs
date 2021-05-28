@@ -61,7 +61,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
             resultadoTroco = op.ValorTroco;
 
 
-            Calcular(ref resultadoTroco);
+            listaRetorno.AddRange(Calcular(ref resultadoTroco));
 
 
             if(_repoOperacao.Registrar(op))
@@ -137,7 +137,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
                     retorno.Append(string.Format("{0} {1} de {2:C2} ", d.Quantidade, Enum.GetName(typeof(TipoDinheiro),d.Tipo), d.Valor));
                 }
 
-                return retorno.ToString();
+                return string.Format($"{mensagemRetorno}\n{retorno}");
             }
             else 
             {

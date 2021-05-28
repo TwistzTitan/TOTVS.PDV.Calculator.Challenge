@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TOTVS.PDV.Calculator.Challenge.Data;
 using TOTVS.PDV.Calculator.Challenge.Model;
 
@@ -24,15 +25,21 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
 
         
         [HttpGet]
-        public ActionResult<HttpStatusCode> Operacoes()
+        public ActionResult Operacoes()
         {
             var ops = _repo.ObterTodos();
             
             return Ok(ops);
         }
-        
+        /// <summary>
+        ///  Obter o troco de uma operação de valor
+        /// </summary>
+        /// <param name="op"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult<HttpStatusCode> ObterTroco(OperacaoDTO op)
+        [Consumes("application/json")]
+       
+        public ActionResult ObterTroco(OperacaoDTO op)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Modelo inválido");
@@ -43,8 +50,8 @@ namespace TOTVS.PDV.Calculator.Challenge.Controllers
 
             if (lista.Any())
             {
-             
-                return Created("Operação realizada.", _calculadoraService.MensagemRetorno());
+                
+                return Created("PDV Calculadora",_calculadoraService.MensagemRetorno());
             }
 
             else

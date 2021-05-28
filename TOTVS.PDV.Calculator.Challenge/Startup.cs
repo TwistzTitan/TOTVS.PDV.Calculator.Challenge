@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,8 +32,7 @@ namespace TOTVS.PDV.Calculator.Challenge
 
             services.AddTransient<IRepository<Operacao>, RepositorioOperacao>();
 
-            services.AddSwaggerGen(s => s.SwaggerDoc("", new OpenApiInfo() { Title = "PDV Calculadora" }));
-
+            services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo() { Title = "PDV Calculadora" , Version = "1" , Description = "Calculadora PDV para Obter Troco"}));
            
         }
 
@@ -55,17 +52,20 @@ namespace TOTVS.PDV.Calculator.Challenge
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
 
             });
 
-            app.UseSwagger(c => c.SerializeAsV2 = true);
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PDV Calculadora V1");
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "PDV Calculadora V1");
+                c.RoutePrefix = string.Empty;
             });
         }
     }
