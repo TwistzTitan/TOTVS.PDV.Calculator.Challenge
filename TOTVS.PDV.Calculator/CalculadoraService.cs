@@ -105,11 +105,23 @@ namespace TOTVS.PDV.Calculator
 
             Operacao opTest = operacaoFixtures.ComNomeOperador("Janice").ComValorPago(1000).ComValorTotal(1000).Build();
 
-            List<Dinheiro> listaPadrao = calculadora.ObterTroco(opTest);
-            
-            Assert.AreEqual(listaPadrao.Count,0);
+            repo.Setup(calc => calc.Registrar(opTest)).Returns(true);
 
-            Assert.IsTrue(calculadora.MensagemRetorno().Contains("Não há troco para essa operação"));
+            PDVCalculadoraService calcPadrao = new PDVCalculadoraService(repo.Object);
+
+            List<Dinheiro> listaPadrao = calcPadrao.ObterTroco(opTest);
+            
+            Assert.IsTrue(listaPadrao.Count() > 0);
+
+            Assert.AreEqual(listaPadrao.Where(d => d.Tipo == TipoDinheiro.Moeda).First().Valor, 0);
+
+            Assert.AreEqual(listaPadrao.Where(d => d.Tipo == TipoDinheiro.Moeda).First().Quantidade, 0);
+
+            Assert.AreEqual(listaPadrao.Where(d => d.Tipo == TipoDinheiro.Nota).First().Valor, 0);
+
+            Assert.AreEqual(listaPadrao.Where(d => d.Tipo == TipoDinheiro.Nota).First().Quantidade, 0);
+
+            Assert.IsTrue(calcPadrao.MensagemRetorno().Contains("Não há troco para essa operação"));
 
 
         }

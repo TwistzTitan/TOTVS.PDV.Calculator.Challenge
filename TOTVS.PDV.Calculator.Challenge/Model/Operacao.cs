@@ -58,7 +58,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
 
     public class Moeda : Dinheiro
     {   
-        public Moeda (int? quantidade, double valor = 0) 
+        public Moeda (int? quantidade = 0, double valor = 0) 
         {
             Quantidade = quantidade.GetValueOrDefault();
 
@@ -70,7 +70,7 @@ namespace TOTVS.PDV.Calculator.Challenge.Model
 
     public class Nota : Dinheiro
     {
-        public Nota(int? quantidade, double valor = 0)
+        public Nota(int? quantidade = 0, double valor = 0)
         {
             Quantidade = quantidade.GetValueOrDefault();
 

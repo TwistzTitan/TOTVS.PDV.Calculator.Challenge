@@ -51,8 +51,11 @@ namespace TOTVS.PDV.Calculator.Challenge.Services
             if (op.ValorTroco == 0)
             {
                 if(_repoOperacao.Registrar(op))
-
+                {
                     mensagemRetorno = "Não há troco para essa operação. Operaçao realizada com sucesso";
+                    listaRetorno.Add(new Moeda());
+                    listaRetorno.Add(new Nota());
+                }
 
                 return listaRetorno;
 
