@@ -60,7 +60,7 @@ namespace TOTVS.PDV.Calculator
             Assert.IsTrue(compareTroco > trocoTest);
             Assert.IsTrue(listaNotas.All(m => m.GetType() == typeof(Nota)));
             Assert.IsTrue(listaNotas.All(m => m.Quantidade > 0));
-            Assert.IsTrue(listaNotas.All(m => m.Valor > 10));
+            Assert.IsTrue(listaNotas.All(m => m.Valor >= 10));
             Assert.IsNotNull(opTest.NomeOperador);
         }
 
